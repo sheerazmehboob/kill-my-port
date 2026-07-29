@@ -65,36 +65,17 @@ Before you start, make sure you have:
 
 ---
 
-## 🚀 Installation (One-Time Setup)
+## 🚀 Installation
 
-### Step 1 — Clone the Repository
+For detailed, step-by-step instructions on how to install the pre-built binaries for your operating system (macOS, Windows, or Linux), please see our dedicated Installation Guide:
 
-```bash
-git clone https://github.com/sheerazmehboob/kill-my-port.git
-cd kill-my-port
-```
+👉 **[View the Installation Guide (INSTALL.md)](./INSTALL.md)**
 
-### Step 2 — Run Setup
+*(Pre-built binaries are available for download on the [Releases](https://github.com/sheerazmehboob/kill-my-port/releases) page).*
 
-This is the **only command you will ever need to run**. It installs dependencies, builds the app, registers it in your system launcher, sets it to auto-start on boot, and launches it immediately.
+---
 
-**Linux / macOS:**
-```bash
-chmod +x setup.sh
-./setup.sh
-```
-
-**Windows:**
-```bat
-setup.bat
-```
-
-That's it. ✅ You're done.
-
-After this:
-- **Kill My Port** appears in your system application search (Ubuntu Activities, macOS Spotlight, Windows Start Menu).
-- It **auto-starts on every login** — no terminal, no `npm run dev`, ever again.
-- It **lives in your System Tray** — pressing `[X]` hides it to the tray rather than quitting.
+## 🛠️ Building from Source (Developers)
 
 ---
 
