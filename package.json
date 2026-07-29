@@ -5,7 +5,7 @@
   "type": "module",
   "main": "dist-electron/main.js",
   "description": "End port conflicts in one click",
-  "author": "Developer",
+  "author": "Sheeraz Mehboob <sherazmehboob14@gmail.com>",
   "scripts": {
     "start": "electron .",
     "dev": "vite",
