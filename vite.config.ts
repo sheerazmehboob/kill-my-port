@@ -60,12 +60,6 @@ export default defineConfig({
         vite: {
           build: {
             outDir: 'dist-electron',
-            watch: {
-              chokidar: {
-                usePolling: true,
-                interval: 1000,
-              },
-            },
           },
         },
       },
@@ -78,12 +72,6 @@ export default defineConfig({
         vite: {
           build: {
             outDir: 'dist-electron',
-            watch: {
-              chokidar: {
-                usePolling: true,
-                interval: 1000,
-              },
-            },
           },
         },
       },
