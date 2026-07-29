@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-base: #f1f5f9;
+    --bg-surface: #ffffff;
+    --bg-surface-hover: #f8fafc;
+    --bg-surface-active: #f1f5f9;
+    --border-color: #e2e8f0;
+    
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+  }
+  
+  .dark {
+    /* Mapped from the Inquery reference UI */
+    --bg-base: #13141c;       /* Very deep page background */
+    --bg-surface: #1c1d27;    /* Card/component background */
+    --bg-surface-hover: #232532;
+    --bg-surface-active: #2b2d3c;
+    --border-color: #2b2d3c;  /* Subtle borders */
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #475569;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root { width: 100%; min-height: 100vh; }
+
+/* ── Custom scrollbar ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ── Utilities ────────────────────────────────────────────────────────────── */
+@layer utilities {
+
+  /* Inputs & Forms */
+  .input-field {
+    @apply w-full px-3 py-2 bg-surface text-text-primary border border-surface-border rounded-lg text-sm
+           focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500
+           placeholder-text-muted transition-all shadow-sm;
+  }
+
+  /* Buttons matching reference UI */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm
+           bg-brand-500 hover:bg-brand-400 text-white
+           transition-all duration-150 active:scale-95 shadow-sm
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm
+           bg-surface border border-surface-border text-text-primary hover:bg-surface-hover
+           transition-all duration-150 active:scale-95 shadow-sm
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm
+           text-text-secondary hover:text-text-primary hover:bg-surface-hover
+           transition-all duration-150 active:scale-95;
+  }
+
+  /* Standard status pills (matching Inquery) */
+  .pill {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold border;
+  }
+  .pill-open     { @apply pill bg-surface-hover text-text-secondary border-surface-border; }
+  .pill-completed{ @apply pill bg-brand-500/10 text-brand-500 border-brand-500/30; }
+  .pill-approved { @apply pill bg-emerald-500/10 text-emerald-500 border-emerald-500/30; }
+  .pill-danger   { @apply pill bg-red-500/10 text-red-500 border-red-500/30; }
+  .pill-docker   { @apply pill bg-cyan-500/10 text-cyan-500 border-cyan-500/30; }
+  .pill-amber    { @apply pill bg-amber-500/10 text-amber-500 border-amber-500/30; }
+
+}
+
+/* ── Animations ───────────────────────────────────────────────────────────── */
+.animate-fade-in  { animation: fadeIn  0.2s ease-out both; }
+.animate-scale-up { animation: scaleUp 0.2s ease-out both; }
+.animate-slide-up { animation: slideUp 0.2s ease-out both; }
+
+@keyframes fadeIn  { from { opacity: 0; }                       to { opacity: 1; } }
+@keyframes scaleUp { from { opacity: 0; transform: scale(0.96) translateY(6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(8px); }             to { opacity: 1; transform: translateY(0); } }
