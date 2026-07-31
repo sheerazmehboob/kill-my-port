@@ -99,7 +99,7 @@ export async function isPortListening(port: number): Promise<boolean> {
         const { stdout } = await execAsync(`ss -tlnp "sport = :${port}"`, {
           timeout: 2000,
         });
-        return stdout.split('\n').filter(l => l.trim() && !l.startsWith('Netid')).length > 0;
+        return stdout.split('\n').filter(l => l.trim() && !l.startsWith('Netid') && !l.startsWith('State')).length > 0;
       } catch {
         const { stdout } = await execAsync(`lsof -i TCP:${port} -s TCP:LISTEN -t`, {
           timeout: 2000,

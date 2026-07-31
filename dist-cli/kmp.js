@@ -3759,7 +3759,7 @@ async function isPortListening(port) {
         const { stdout: stdout2 } = await execAsync(`ss -tlnp "sport = :${port}"`, {
           timeout: 2e3
         });
-        return stdout2.split("\n").filter((l2) => l2.trim() && !l2.startsWith("Netid")).length > 0;
+        return stdout2.split("\n").filter((l2) => l2.trim() && !l2.startsWith("Netid") && !l2.startsWith("State")).length > 0;
       } catch {
         const { stdout: stdout2 } = await execAsync(`lsof -i TCP:${port} -s TCP:LISTEN -t`, {
           timeout: 2e3
@@ -4134,11 +4134,11 @@ cli.command("", "Interactive port killer").option("-s, --sort <type>", "Sort by:
   saveState(ports);
   s.stop(`Found ${ports.length} active ports`);
   const selectedPorts = await multiselect({
-    message: "Select ports to kill (Space to select, Enter to confirm, type to search)",
+    message: "Select ports to kill (Space to select, Enter to confirm)",
     options: ports.map((port) => {
       const processStr = formatProcessName(port.processName || "Unknown", port.isSystemProcess);
       return {
-        value: port,
+        value: `${port.port}-${port.pid}`,
         label: `[${import_picocolors.default.cyan(port.port)}] ${processStr}`,
         hint: import_picocolors.default.gray(`PID: ${port.pid}`)
       };
@@ -4149,7 +4149,10 @@ cli.command("", "Interactive port killer").option("-s, --sort <type>", "Sort by:
     outro("Operation cancelled.");
     return;
   }
-  for (const port of selectedPorts) {
+  for (const val of selectedPorts) {
+    const [portId, pidId] = val.split("-");
+    const port = ports.find((p) => p.port === parseInt(portId, 10) && p.pid === parseInt(pidId, 10));
+    if (!port) continue;
     s.start(`Killing ${port.processName} on port ${port.port}...`);
     try {
       await killProcessCore(port.pid, port.port);

@@ -172,11 +172,11 @@ cli.command('', 'Interactive port killer')
     s.stop(`Found ${ports.length} active ports`);
     
     const selectedPorts = await p.multiselect({
-      message: 'Select ports to kill (Space to select, Enter to confirm, type to search)',
+      message: 'Select ports to kill (Space to select, Enter to confirm)',
       options: ports.map((port: any) => {
         const processStr = formatProcessName(port.processName || 'Unknown', port.isSystemProcess);
         return {
-          value: port,
+          value: `${port.port}-${port.pid}`,
           label: `[${pc.cyan(port.port)}] ${processStr}`,
           hint: pc.gray(`PID: ${port.pid}`)
         };
@@ -189,7 +189,10 @@ cli.command('', 'Interactive port killer')
       return;
     }
     
-    for (const port of (selectedPorts as any[])) {
+    for (const val of (selectedPorts as any[])) {
+      const [portId, pidId] = val.split('-');
+      const port = ports.find((p: any) => p.port === parseInt(portId, 10) && p.pid === parseInt(pidId, 10));
+      if (!port) continue;
       s.start(`Killing ${port.processName} on port ${port.port}...`);
       try {
         await killProcessCore(port.pid, port.port);
