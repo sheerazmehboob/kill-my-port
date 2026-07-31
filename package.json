@@ -1,16 +1,21 @@
 {
-  "name": "killmyport",
-  "private": true,
+  "name": "killmyport-cli",
   "version": "0.0.1",
   "type": "module",
   "main": "dist-electron/main.js",
   "description": "End port conflicts in one click",
   "author": "Sheeraz Mehboob <sherazmehboob14@gmail.com>",
+  "bin": {
+    "kmp": "./dist-cli/kmp.js",
+    "killmyport": "./dist-cli/kmp.js"
+  },
   "scripts": {
+    "prepublishOnly": "npm run build:cli",
     "start": "electron .",
     "dev": "vite",
     "dev:admin": "sudo -E env \"PATH=$PATH\" vite",
     "build": "tsc -b && vite build",
+    "build:cli": "esbuild electron/cli.ts --bundle --platform=node --format=esm --outfile=dist-cli/kmp.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "electron:dev": "vite --mode electron",
@@ -21,6 +26,10 @@
     "package:all": "npm run build && electron-builder -mwl -p always"
   },
   "dependencies": {
+    "@clack/prompts": "^1.7.0",
+    "cac": "^7.0.0",
+    "cli-table3": "^0.6.5",
+    "picocolors": "^1.1.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
@@ -33,6 +42,7 @@
     "autoprefixer": "^10.4.23",
     "electron": "^40.10.6",
     "electron-builder": "^26.4.0",
+    "esbuild": "^0.28.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",

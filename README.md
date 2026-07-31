@@ -47,6 +47,42 @@ You open a terminal, try `lsof -ti:3000 | xargs kill -9`, forget the syntax, Goo
 
 ---
 
+## 💻 Command Line Interface (CLI)
+
+Kill My Port now includes a powerful, beautiful CLI for developers who prefer the terminal. 
+
+### Quick Install
+You can install the CLI using either of our official packages:
+```bash
+# Option 1: Standard
+npm install -g killmyport-cli
+
+# Option 2: Scoped 
+npm install -g @sheerazmehboob/killmyport
+```
+
+### Usage
+Run the interactive port killer (shows a beautifully animated, searchable list):
+```bash
+kmp
+# or
+killmyport
+```
+
+List ports in a table:
+```bash
+kmp list
+```
+
+Kill a specific port instantly:
+```bash
+kmp kill 3000
+```
+
+> **Safety Built-in:** The CLI automatically hides and protects system processes (like DNS on port 53) from being killed. You can use `kmp list --all` to show them, and `kmp kill <port> --force` if you really need to terminate them.
+
+---
+
 ## 📋 Requirements
 
 Before you start, make sure you have:
