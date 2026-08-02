@@ -209,7 +209,7 @@ cli.command('', 'Interactive port killer')
     
     for (const val of (selectedPorts as any[])) {
       const [portId, pidId] = val.split('-');
-      const port = ports.find((p: any) => p.port === parseInt(portId, 10) && p.pid === parseInt(pidId, 10));
+      const port: any = ports.find((p: any) => p.port === parseInt(portId, 10) && p.pid === parseInt(pidId, 10));
       if (!port) continue;
       s.start(`Killing ${port.processName} on port ${port.port}...`);
       try {
