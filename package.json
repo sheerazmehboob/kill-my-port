@@ -1,6 +1,6 @@
 {
   "name": "killmyport-cli",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "main": "dist-electron/main.js",
   "description": "End port conflicts in one click",
