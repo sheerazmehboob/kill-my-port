@@ -2,13 +2,16 @@
   "name": "killmyport-cli",
   "version": "0.0.2",
   "type": "module",
-  "main": "dist-electron/main.js",
+  "main": "dist-cli/kmp.js",
   "description": "End port conflicts in one click",
   "author": "Sheeraz Mehboob <sherazmehboob14@gmail.com>",
   "bin": {
     "kmp": "./dist-cli/kmp.js",
     "killmyport": "./dist-cli/kmp.js"
   },
+  "files": [
+    "dist-cli"
+  ],
   "scripts": {
     "prepublishOnly": "npm run build:cli",
     "start": "electron .",
