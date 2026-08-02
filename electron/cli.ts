@@ -121,7 +121,7 @@ cli.command('kill <target>', 'Kill a process by port number or list index')
       // Treat as a direct port number
       portToKill = num;
       const ports = await scanSystemPorts();
-      const match = ports.find((p: any) => p.port === num);
+      const match: any = ports.find((p: any) => p.port === num);
       if (match) {
         if (match.isSystemProcess && !options.force) {
           console.log(pc.red('Safety lock: Cannot kill a system process. Use --force to override.'));
