@@ -138,8 +138,26 @@ cli.command('kill <target>', 'Kill a process by port number or list index')
       await killProcessCore(pidToKill, portToKill);
       spinner.stop(pc.green(`✔ Successfully terminated process on port ${portToKill}.`));
     } catch (e: any) {
-      spinner.stop(pc.red(`✖ Failed to terminate: ${e.message}`));
-      process.exit(1);
+      spinner.stop(pc.yellow(`⚠ Requires elevated privileges. Prompting for permission...`));
+      
+      const { spawnSync } = require('child_process');
+      if (process.platform === 'win32') {
+        const result = spawnSync('powershell', ['-Command', `Start-Process taskkill -ArgumentList "/F /PID ${pidToKill}" -Verb RunAs -WindowStyle Hidden`], { stdio: 'ignore' });
+        if (result.status === 0) {
+           console.log(pc.green(`✔ Successfully requested UAC to terminate process on port ${portToKill}.`));
+        } else {
+           console.log(pc.red(`✖ Failed to terminate even with elevated privileges.`));
+           process.exit(1);
+        }
+      } else {
+        const result = spawnSync('sudo', ['kill', '-9', pidToKill.toString()], { stdio: 'inherit' });
+        if (result.status === 0) {
+           console.log(pc.green(`✔ Successfully terminated process on port ${portToKill} using sudo.`));
+        } else {
+           console.log(pc.red(`✖ Failed to terminate even with sudo.`));
+           process.exit(1);
+        }
+      }
     }
   });
 
@@ -198,7 +216,24 @@ cli.command('', 'Interactive port killer')
         await killProcessCore(port.pid, port.port);
         s.stop(pc.green(`✔ Killed port ${port.port} (${port.processName})`));
       } catch (err: any) {
-        s.stop(pc.red(`✖ Failed to kill port ${port.port}: ${err.message}`));
+        s.stop(pc.yellow(`⚠ Requires elevated privileges. Prompting for permission...`));
+        
+        const { spawnSync } = require('child_process');
+        if (process.platform === 'win32') {
+          const result = spawnSync('powershell', ['-Command', `Start-Process taskkill -ArgumentList "/F /PID ${port.pid}" -Verb RunAs -WindowStyle Hidden`], { stdio: 'ignore' });
+          if (result.status === 0) {
+             console.log(pc.green(`✔ Successfully requested UAC to terminate process on port ${port.port}.`));
+          } else {
+             console.log(pc.red(`✖ Failed to terminate even with elevated privileges.`));
+          }
+        } else {
+          const result = spawnSync('sudo', ['kill', '-9', port.pid.toString()], { stdio: 'inherit' });
+          if (result.status === 0) {
+             console.log(pc.green(`✔ Successfully terminated process on port ${port.port} using sudo.`));
+          } else {
+             console.log(pc.red(`✖ Failed to terminate even with sudo.`));
+          }
+        }
       }
     }
     

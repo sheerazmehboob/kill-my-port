@@ -4112,8 +4112,25 @@ cli.command("kill <target>", "Kill a process by port number or list index").opti
     await killProcessCore(pidToKill, portToKill);
     spinner2.stop(import_picocolors.default.green(`\u2714 Successfully terminated process on port ${portToKill}.`));
   } catch (e) {
-    spinner2.stop(import_picocolors.default.red(`\u2716 Failed to terminate: ${e.message}`));
-    process.exit(1);
+    spinner2.stop(import_picocolors.default.yellow(`\u26A0 Requires elevated privileges. Prompting for permission...`));
+    const { spawnSync } = __require("child_process");
+    if (process.platform === "win32") {
+      const result = spawnSync("powershell", ["-Command", `Start-Process taskkill -ArgumentList "/F /PID ${pidToKill}" -Verb RunAs -WindowStyle Hidden`], { stdio: "ignore" });
+      if (result.status === 0) {
+        console.log(import_picocolors.default.green(`\u2714 Successfully requested UAC to terminate process on port ${portToKill}.`));
+      } else {
+        console.log(import_picocolors.default.red(`\u2716 Failed to terminate even with elevated privileges.`));
+        process.exit(1);
+      }
+    } else {
+      const result = spawnSync("sudo", ["kill", "-9", pidToKill.toString()], { stdio: "inherit" });
+      if (result.status === 0) {
+        console.log(import_picocolors.default.green(`\u2714 Successfully terminated process on port ${portToKill} using sudo.`));
+      } else {
+        console.log(import_picocolors.default.red(`\u2716 Failed to terminate even with sudo.`));
+        process.exit(1);
+      }
+    }
   }
 });
 cli.command("", "Interactive port killer").option("-s, --sort <type>", "Sort by: latest, port, pid", { default: "latest" }).option("-a, --all", "Show all ports including system processes").action(async (options) => {
@@ -4158,7 +4175,23 @@ cli.command("", "Interactive port killer").option("-s, --sort <type>", "Sort by:
       await killProcessCore(port.pid, port.port);
       s.stop(import_picocolors.default.green(`\u2714 Killed port ${port.port} (${port.processName})`));
     } catch (err) {
-      s.stop(import_picocolors.default.red(`\u2716 Failed to kill port ${port.port}: ${err.message}`));
+      s.stop(import_picocolors.default.yellow(`\u26A0 Requires elevated privileges. Prompting for permission...`));
+      const { spawnSync } = __require("child_process");
+      if (process.platform === "win32") {
+        const result = spawnSync("powershell", ["-Command", `Start-Process taskkill -ArgumentList "/F /PID ${port.pid}" -Verb RunAs -WindowStyle Hidden`], { stdio: "ignore" });
+        if (result.status === 0) {
+          console.log(import_picocolors.default.green(`\u2714 Successfully requested UAC to terminate process on port ${port.port}.`));
+        } else {
+          console.log(import_picocolors.default.red(`\u2716 Failed to terminate even with elevated privileges.`));
+        }
+      } else {
+        const result = spawnSync("sudo", ["kill", "-9", port.pid.toString()], { stdio: "inherit" });
+        if (result.status === 0) {
+          console.log(import_picocolors.default.green(`\u2714 Successfully terminated process on port ${port.port} using sudo.`));
+        } else {
+          console.log(import_picocolors.default.red(`\u2716 Failed to terminate even with sudo.`));
+        }
+      }
     }
   }
   outro("Finished cleaning up ports!");
