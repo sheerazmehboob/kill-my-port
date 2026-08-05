@@ -1,0 +1,6 @@
+name: "KillMyPort CodeQL Config"
+paths-ignore:
+  - 'dist'
+  - 'dist-cli'
+  - 'dist-electron'
+  - 'node_modules'
