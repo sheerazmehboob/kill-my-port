@@ -1,0 +1,15 @@
+title: "[Showcase]: "
+labels: ["showcase"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🎉 Show and Tell
+        Show off how you're using KillMyPort in your daily workflow or projects!
+  - type: textarea
+    id: showcase
+    attributes:
+      label: What would you like to share?
+      description: Share your workflow, a video, a screenshot, or how KillMyPort has helped you save time.
+    validations:
+      required: true

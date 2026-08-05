@@ -1,0 +1,15 @@
+title: "[General]: "
+labels: ["general"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 💬 General Discussion
+        Chat about KillMyPort, share tips and tricks, or talk about related topics!
+  - type: textarea
+    id: topic
+    attributes:
+      label: What's on your mind?
+      description: Start the conversation here!
+    validations:
+      required: true

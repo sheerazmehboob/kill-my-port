@@ -1,0 +1,23 @@
+title: "[Q&A]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ❓ Ask a Question
+        Need help with KillMyPort? Ask your question here! 
+        Make sure you've checked the README and existing discussions first.
+  - type: textarea
+    id: question
+    attributes:
+      label: What is your question?
+      description: Please be as detailed as possible. If it's about a specific OS or environment, please specify.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or code snippets about the problem here.
+    validations:
+      required: false
